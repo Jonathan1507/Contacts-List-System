@@ -1,5 +1,5 @@
 /**
-    Route => /api/user
+    Route => /api/contact
  */
 const {Router} = require('express');
 const {check} = require('express-validator');
@@ -8,11 +8,15 @@ const {check} = require('express-validator');
 const {validateFields} = require('../middlewares/validate-fields');
 
 // We import the 'Users' controller.
-const {createUser, updateUser} = require('../controller/userController');
+const {listContact, createContact, updateContact, deleteContact} = require('../controller/contactController');
 const {validateJWT} = require('../middlewares/validate-jwt');
 
 const router = Router();
 
+//============================================================
+//==================== List Contacts ====================
+//============================================================
+router.get('/', listContact);
 
 //============================================================
 //====================== Create User =======================
@@ -21,13 +25,14 @@ router.post('/',
     [
         // Here a custom validation is done with "expres-validator",
         // Only to the fields that are required
+        validateJWT,
         check('name', 'The name is required').not().isEmpty(),
         check('surnames', 'Surnames is required').not().isEmpty(),
         check('email', 'Email is required').isEmail(),
-        check('password', 'The password is required').not().isEmpty(),
+        check('phone', 'Phone is required').not().isEmpty(),
         validateFields
     ], 
-    createUser);
+    createContact);
 
 //============================================================
 //==================== Update User ====================
@@ -40,8 +45,14 @@ router.put('/:id',
         check('name', 'The name is required').not().isEmpty(),
         check('surnames', 'Paternal surnames is required').not().isEmpty(),
         check('email', 'Email is required').isEmail(),
+        check('phone', 'The password is required').not().isEmpty(),
         validateFields
     ],
-    updateUser);
+    updateContact);
+
+//============================================================
+//===================== Delete Contact ======================
+//============================================================
+router.delete('/:id', deleteContact);
 
 module.exports = router;
