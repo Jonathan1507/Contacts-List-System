@@ -9,12 +9,12 @@ const { body } = require('express-validator');
 //============================================================
 const listContact = async(req, res = response) => {
 
-    const since = Number(req.query.since) || 0;
+    const from = Number(req.query.from) || 0;
     const [contacts, total] = await Promise.all([
         Contact 
             .find({}, 'name surnames email phone')
             .populate('user','name email')
-            .skip(since)
+            .skip(from)
             .limit(10),
 
         Contact.countDocuments()

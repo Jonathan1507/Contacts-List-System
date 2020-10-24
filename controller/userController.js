@@ -66,7 +66,7 @@ const updateUser = async(req, res = response) => {
                 });
             }
         }
-        // delete campos.contrasenia;
+
         fields.email = email;
         const userupdated = await User.findByIdAndUpdate(uid, fields, {new: true});
 
